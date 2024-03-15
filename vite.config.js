@@ -20,7 +20,7 @@ export default defineConfig({
 
     ],
     server: {
-        host: '192.168.1.65',
+        host: '192.168.1.196',
         origin:'http://localhost:5173',
       },
 });

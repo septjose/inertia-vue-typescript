@@ -10,7 +10,7 @@ class PruebaModel extends Model
 {
     use HasFactory;
     protected $table = 'prueba';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_prueba';
     protected $fillable = [
         'id_prueba',
         'input1',

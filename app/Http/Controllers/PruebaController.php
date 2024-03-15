@@ -79,9 +79,14 @@ class PruebaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePruebaRequest $request, PruebaModel $prueba)
+    public function update(UpdatePruebaRequest $request)
     {
+        $prueba = PruebaModel::where('id_prueba',$request->id_prueba)->first();
+
+//        dd($prueba);
         $prueba->update($request->validated());
+
+        return $prueba;
     }
 
     /**

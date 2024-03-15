@@ -47,8 +47,6 @@ Route::get('/prueba/getData', [PruebaController::class, 'getPruebas'])->name('pr
 
 Route::post('/prueba_eliminar',[PruebaController::class,'destroy'])->name('prueba.destroy');
 
-Route::get('/ediar_prueba',[PruebaController::class,'edit'])->name('prueba.edit');
-
 Route::post('/prueba_editar',[PruebaController::class,'update'])->name('prueba.update');
 
 

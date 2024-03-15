@@ -3,13 +3,12 @@ import { Prueba } from './../interfaces/Iprueba';
 
 export class PruebaService {
 
-public static async  getAllPruebas(currentPage: { value: number }, paginas: { value: number }, pruebas: { value: Prueba[] }): Promise<Prueba[] | any> {
+public static async  getAllPruebas(currentPage: number): Promise<Prueba[] | any> {
     try {
-      const response = await axios.get('/prueba/getData?page=' + currentPage.value);
-      paginas.value = response.data.last_page;
-      pruebas.value = response.data.data;
+      const response = await axios.get('/prueba/getData?page=' + currentPage);
 
-    return response.data.data;
+      console.log('service .data', response.data);
+    return response.data;
     } catch (error) {
       //console.error('Error fetching data:', error);
       return {'Error fetching data': error};
@@ -25,10 +24,10 @@ public static async  createPrueba(prueba: Prueba) {
     }
 }
 
-
 public static async  updatePrueba(prueba: Prueba) {
     try {
-      const response = await axios.put('/prueba/update/' + prueba.id_prueba, prueba);
+
+      const response = await axios.post('/prueba_editar', prueba);
       return response.data;
     } catch (error) {
       return {'Error fetching data': error};
@@ -37,6 +36,7 @@ public static async  updatePrueba(prueba: Prueba) {
 
 public static async deletePrueba(prueba: Prueba) {
     try {
+      console.log('Imprimo prueba en el servicio',prueba);
       const response = await axios.post('/prueba_eliminar',prueba);
       return response.data;
     } catch (error) {

@@ -1,8 +1,9 @@
 <template>
-    <dialog class="modal modal-bottom sm:modal-middle" :open="showModal" @close="closeModal">
+    <dialog class="modal modal-bottom sm:modal-middle"  :open="showModal"   @close="closeModal">
       <div class="modal-box">
         <div class="content">
           <slot></slot>
+<!--<pre>{{elementoSeleccionado}}</pre>-->
         </div>
         <div class="modal-action">
           <form method="dialog">
@@ -16,19 +17,20 @@
 
   <script setup lang="ts">
   import { defineProps, ref } from 'vue';
+import { useModalStore } from "../stores/modal.store";
+const {modalVue, openModal, closeModal}=useModalStore();
 
   const props = defineProps({
     showModal: {
       type: Boolean,
       default: false // Inicialmente, el modal está cerrado
-    }
+    },
+
   });
 
 
-  const closeModal = () => {
-    // Cambia el valor de la prop showModal a falso para cerrar el modal
-//    emit('close');
-  };
+
+
   </script>
 
   <style scoped>

@@ -5,36 +5,29 @@ import { Prueba } from "./../interfaces/Iprueba";
 import { ref } from "vue";
 
 interface Pruebas {
-    data: Prueba[]
-  }
-
+    data: Prueba[];
+    last_page: number;
+}
 
 export const usePruebaStore = defineStore("prueba", () => {
+     const prueba: Pruebas  = reactive<Pruebas>(
+         {
+             data: [],
+             last_page: 1,
+         }
+     );
 
+    const currentPage = ref(1); //3
 
+    const fetchPruebas = async (currentP: number = 1) => {
+        const { data, last_page } = await PruebaService.getAllPruebas(currentP);
 
-    const prueba: Pruebas  = reactive<Pruebas>(
-        {
-            data: [],
-        }
-        //llamar el servicio y poner los valores en el objeto
-    );
+        console.log("last page", data, last_page);
 
-    // Define los estados
-    const pruebas = ref([]);
-    const currentPage = ref(1);
-    const totalPages = ref(0);
-
-    // Define las acciones (métodos) para interactuar con el servicio
-    const fetchPruebas = async () => {
-        const  data  = await PruebaService.getAllPruebas(
-            currentPage,
-            totalPages,
-            pruebas
-        );
-            prueba.data = data;
-    return prueba;
-
+        prueba.data = data;
+        prueba.last_page = last_page;
+//        lastPage.value = last_page;
+        return prueba;
     };
 
     const createPrueba = async (data: Prueba) => {
@@ -43,7 +36,8 @@ export const usePruebaStore = defineStore("prueba", () => {
         await fetchPruebas();
     };
 
-    const updatePrueba = async ( data: Prueba) => {
+    const updatePrueba = async (data: Prueba) => {
+        //Mostrar_modal
         await PruebaService.updatePrueba(data);
         // Luego de actualizar la prueba, vuelves a cargar las pruebas para reflejar el cambio
         await fetchPruebas();
@@ -53,7 +47,43 @@ export const usePruebaStore = defineStore("prueba", () => {
         await PruebaService.deletePrueba(data);
         // Luego de eliminar la prueba, vuelves a cargar las pruebas para reflejar el cambio
         await fetchPruebas();
+
     };
 
-    return { prueba, fetchPruebas, createPrueba, updatePrueba, deletePrueba };
+    return {
+        prueba,
+        currentPage,
+        fetchPruebas,
+        createPrueba,
+        updatePrueba,
+        deletePrueba,
+    };
 });
+
+/*const objExample={
+caracteristicas:[
+    {nombre:"color",valor:"rojo"},
+    {nombre:"tamaño",valor:"grande"},
+    {nombre:"peso",valor:"medio"}
+],
+
+atributos:[
+    {nombre:"color",valor:"rojo"},
+    {nombre:"tamaño",valor:"grande"},
+    {nombre:"peso",valor:"medio"}
+],
+total:100,
+nombre:"prueba"
+
+}
+
+const dataObjeto=objExample;
+
+console.log("dataObjeto",dataObjeto);
+
+const {caracteristicas,atributos,total,nombre}=dataObjeto;
+
+console.log("caracteristicas",caracteristicas);
+console.log("atributos",atributos);
+console.log("total",total);
+console.log("nombre",nombre);*/

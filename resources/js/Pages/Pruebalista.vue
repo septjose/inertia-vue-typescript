@@ -2,13 +2,11 @@
     <div>
         <div class="bg-blue-500 flex items-center justify-center">
             <h3>Formulario para agregar más a la tabla</h3>
-            <FormularioView />
+            <FormularioView :elementoSeleccionado="elementoSeleccionado"  :tipo_boton="tipo_boton"/>
         </div>
 
         <div class="flex justify-center items-center">
-            <div
-                class="container bckgnd m-7 d-flex align-items-center justify-content-center"
-            >
+            <div class="container bckgnd m-7 d-flex align-items-center justify-content-center">
 
                 <div class="overflow-x-auto">
                     <table class="table">
@@ -16,10 +14,7 @@
                             <tr>
                                 <th>
                                     <label>
-                                        <input
-                                            type="checkbox"
-                                            class="checkbox"
-                                        />
+                                        <input type="checkbox" class="checkbox" />
                                     </label>
                                 </th>
                                 <th>Id prueba</th>
@@ -30,14 +25,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(elm,index) in prueba.data" :key="index">
-
+                            <tr v-for="(elm, index) in prueba.data">
                                 <td>
                                     <label>
-                                        <input
-                                            type="checkbox"
-                                            class="checkbox"
-                                        />
+                                        <input type="checkbox" class="checkbox" />
                                     </label>
                                 </td>
                                 <td>{{ elm.id_prueba }}</td>
@@ -45,16 +36,10 @@
                                 <td>{{ elm.input2 }}</td>
                                 <td>{{ elm.input3 }}</td>
                                 <td>
-                                    <button
-                                        class="btn btn-ghost btn-xs"
-                                        @click="updatePrueba(elm)"
-                                    >
+                                    <button class="btn btn-ghost btn-xs" @click="mostrarModalEditar(elm)">
                                         Editar
                                     </button>
-                                    <button
-                                        class="btn btn-ghost btn-xs"
-                                        @click="deletePrueba(elm)"
-                                    >
+                                    <button class="btn btn-ghost btn-xs" @click="mostrarModalEliminar(elm)">
                                         Eliminar
                                     </button>
                                 </td>
@@ -73,121 +58,95 @@
                     </table>
                 </div>
             </div>
-          </div>
+        </div>
 
+        <!--<pre>{{ prueba.last_page }}</pre>-->
         <!-- Paginación -->
         <div class="flex justify-center items-center">
             <!-- Pagination -->
             <div class="join">
-                <input
-                    v-for="(pagina, index) in paginas"
-                    class="join-item btn btn-square"
-                    type="radio"
-                    name="options"
-                    :aria-label="(index + 1).toString()"
-                    v-bind:checked="currentPage === index + 1"
-                    href="#"
-                    :value="index + 1"
-                    @change="updateCurrentPage"
-                />
-                <!--<pre>{{currentPage}}</pre>-->
+                <input v-for="index in prueba.last_page" :key="index" class="join-item btn btn-square" type="radio"
+                    name="options" :aria-label="index.toString()" :checked="currentPage === index" :value="index"
+                    @change="updateCurrentPage" />
             </div>
             <!-- <Pagination :paginas="paginas" :currentPage="current_page" @updatePage="actualizarPagina" class="flex justify-center items-center" /> -->
         </div>
     </div>
     <div>
-        <Modal :showModal="showModal" @close="showModal = false">
-            <FormularioView />
+        <Modal  v-if="modalVue.modal === ModalType.Editar" :showModal="modalVue.open"   @close="closeModal">
+            <FormularioView  :elementoSeleccionado="elementoSeleccionado"  :tipo_boton="tipo_boton"  />
         </Modal>
     </div>
+<div>
+
+    <Modal v-if="modalVue.modal === ModalType.Eliminar" :showModal="modalVue.open" @close="closeModal">
+        <span>Estas seguro de eliminar es   te resgistro ? </span>
+        <button class="btn btn-ghost btn-xs" @click="deletePruebaView(elementoSeleccionado)">Eliminar</button>
+
+    </Modal>
+
+</div>
+
+
+
+
 </template>
 
 <script setup lang="ts">
 import FormularioView from "@/Pages/FormularioView.vue";
-import axios from "axios";
-import Pagination from "../Layouts/Pagination.vue";
 import Modal from "../Layouts/Modal.vue";
-import { ref, onMounted } from "vue";
-
+import { reactive, ref, onMounted } from "vue";
 import { usePruebaStore } from "../stores/prueba.store";
+import { useModalStore } from "../stores/modal.store";
+import { Prueba } from './../interfaces/Iprueba';
+const { deletePrueba, currentPage, prueba, fetchPruebas } = usePruebaStore();
+const {modalVue,closeModal}=useModalStore();
 
-const {deletePrueba,updatePrueba, prueba, fetchPruebas } = usePruebaStore();
+const elementoSeleccionado = ref(<Prueba>{});
 
-// interface Prueba {
-//   id_prueba: number;
-//   input1: string;
-//   input2: string;
-//   input3: string;
-// }
+const tipo_boton=ref('Post')
 
-// const pruebas = ref<Prueba[]>([]);
-const paginas = ref(0);
-const currentPage = ref(1);
-const showModal = ref(false);
+enum ModalType{
+    "Editar",
+    "Eliminar",
+    "Nuevo"
+}
+const mostrarModalEditar = (elemento: any) => {
+
+  console.log('Elemento seleccionado:', elemento);
+elementoSeleccionado.value = elemento;
+ console.log('elementoSeleccionado.value', elementoSeleccionado.value);
+tipo_boton.value="Put";
+    modalVue.open=true;
+    modalVue.modal=ModalType.Editar;
+};
 
 
-// const PruebaToEdit = ref<Prueba>({
-//   id_prueba: 0,
-//   input1: "",
-//   input2: "",
-//   input3: "",
-// });
+const deletePruebaView=async (elemento: any)=>{
+    console.log('Elemento seleccionado:', elemento);
+    await deletePrueba(elemento);
+    closeModal();
+};
 
-// Función para abrir el modal de edición
-// const editarPrueba = (prueba: Prueba) => {
+const mostrarModalEliminar= (elemento: any)=>{
 
-//   PruebaToEdit.value = prueba;
+  console.log('Elemento seleccionado:', elemento);
+elementoSeleccionado.value = elemento;
+ console.log('elementoSeleccionado.value', elementoSeleccionado.value);
+tipo_boton.value="Delete";
+modalVue.open=true;
+  modalVue.modal=ModalType.Eliminar;
+};
 
-//   showModal.value = true;
-//   //console.log("Imprimo el valor de PruebaTo Edit");
-//   //console.log(PruebaToEdit.value);
-// };
 
-// const fetchData=(async() => {
-//   try {
-//     const response = await axios.get('/prueba/getData?page=' + currentPage.value);
-//     paginas.value = response.data.last_page;
-//     pruebas.value = response.data.data;
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// });
-
-// const editar =  async (prueba: Prueba) => {
-//   try {
-//     const response = await axios.get('/prueba/editar/' + prueba.id_prueba);
-//     console.log(response);
-//     showModal.value = false;
-
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// };
-
-// const eliminar = async (prueba: Prueba) => {
-//     console.log(prueba);
-
-//     axios.post('/prueba_eliminar', prueba)
-//     .then(response => {
-//         fetchData();
-//     })
-//     .catch(error => {
-//         console.log(error);
-//     });
-// };
-
-const updateCurrentPage = (event: any) => {
-    currentPage.value = parseInt(event.target.value);
-    //const data2=fetchPruebas();
-    //console.log("Vista", data2);
+const updateCurrentPage = async (event: any) => {
+    const currentP = parseInt(event.target.value);
+    await fetchPruebas(currentP);
 };
 
 onMounted(async () => {
     try {
-        const data = await fetchPruebas();
-        console.log('Data mounted:', data);
-
-
+       await fetchPruebas();
 
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -196,11 +155,4 @@ onMounted(async () => {
 
 </script>
 
-<style scoped>
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: green;
-}
-</style>
+<style scoped></style>
