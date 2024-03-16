@@ -194,6 +194,7 @@
                     </div><!--end col-->
                 </div><!--end row-->
             </div>
+<Table></Table>
         </div>
     </div><!--end col-->
 </div><!--end row-->
@@ -337,15 +338,11 @@
 <!--end modal -->
 
     </BaseComponent>
-               
+
 </template>
 
-<script>
+<script setup lang="ts">
 import BaseComponent from '/resources/js/Pages/Welcome.vue';
+import Table from '/resources/js/Layouts/Table.vue';
 
-export default {
-components: {
-BaseComponent,
-},
-};
 </script>

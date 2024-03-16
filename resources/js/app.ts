@@ -1,5 +1,16 @@
-import './bootstrap';
-import '../css/app.css';
+
+//import "../assets/css/bootstrap.min.css"
+// Importa todos los archivos CSS de la carpeta 'assets/styles'
+async function importAllCSS() {
+    const cssFiles = import.meta.glob('../assets/**/*.{js,css,woff,woff2,ttf,svg,png,jpg,jpeg,gif}');
+    console.log(cssFiles)
+    const keys = Object.keys(cssFiles);
+    for (const key of keys) {
+      await cssFiles[key]();
+    }
+  }
+
+  importAllCSS();
 
 import { createApp, h, DefineComponent } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

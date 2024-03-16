@@ -6,4 +6,3 @@ export abstract class PruebaRepository {
     abstract updatePrueba(id: number, data: any): Promise<string>;
     abstract deletePrueba(id: number): Promise<string>;
 }
-

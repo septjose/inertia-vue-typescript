@@ -128,19 +128,19 @@
                             <div class="navbar-brand-box horizontal-logo">
                                 <a href="index.html" class="logo logo-dark">
                                     <span class="logo-sm">
-                                        <img src="assets/images/logo-sm.png" alt="" height="22">
+                                       <img src="/logo_abg.png" alt="" height="42px">
                                     </span>
                                     <span class="logo-lg">
-                                        <img src="assets/images/logo-dark.png" alt="" height="22">
+                                        <img src="/logo_abg.png" alt="" height="42px">
                                     </span>
                                 </a>
 
                                 <a href="index.html" class="logo logo-light">
                                     <span class="logo-sm">
-                                        <img src="assets/images/logo-sm.png" alt="" height="22">
+                                        <img src="/logo_abg.png" alt="" height="42px">
                                     </span>
                                     <span class="logo-lg">
-                                        <img src="assets/images/logo-light.png" alt="" height="22">
+                                        <img src="/logo_abg.png" alt="" height="42px">
                                     </span>
                                 </a>
                             </div>
@@ -305,7 +305,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
-                                    Diseñado & Desarrollado por JDev-S
+                                    Diseñado & Desarrollado por JDev-S & Codisoft
                                 </div>
                             </div>
                         </div>
@@ -994,17 +994,10 @@
 </body>
 </template>
 
-  <script>
-  import "/public/assets/js/layout.js";
-  import "/public/assets/libs/bootstrap/js/bootstrap.bundle.min.js";
-
-  
+  <script setup>
   </script>
 
 <style scoped>
-@import "public/assets/css/bootstrap.min.css";
-@import "public/assets/css/icons.min.css";
-@import "public/assets/css/app.min.css";
-@import "public/assets/css/custom.min.css";
+
 
 </style>

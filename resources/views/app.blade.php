@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-layout="vertical" data-sidebar="dark" data-sidebar-size="lg" data-preloader="disable"
-    data-bs-theme="light">
+<html lang="en" data-layout="vertical" data-sidebar="gradient" data-sidebar-size="sm-hover" data-preloader="disable" data-bs-theme="light" >
 
 <head></head>
     <meta charset="utf-8">
